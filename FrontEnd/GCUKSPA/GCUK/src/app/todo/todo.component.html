@@ -1,0 +1,69 @@
+
+<br>
+<br>
+<br>
+<div fxLayout="column" fxLayoutAlign="start stretch" class="cards">
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div fxFlex="90%" fxFlex.md="66.6667%" fxFlex.gt-md="50%">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><h2>To Do List</h2></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ng-container >
+            <ng-container *ngIf="alltasks.length > 0; else allDone" >
+              <mat-list role="list">
+                <mat-list-item *ngFor="let task of objectKeys(alltasks)   "  >
+                  <mat-checkbox (change)="onCompleteToDo($event,alltasks[task],task)" >
+                      {{ alltasks[task] }}
+            <button mat-button color="primary" (click)="addToDo()">Edit</button>
+                    
+                    </mat-checkbox>
+
+                </mat-list-item>
+              </mat-list>
+            </ng-container>
+            <ng-template #allDone>
+              <div fxLayout="row" fxLayoutAlign="center center">
+                <h4>All Done!! 🏖</h4>
+              </div>
+            </ng-template>
+          </ng-container>
+        </mat-card-content>
+      </mat-card>
+<br>
+<br>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><h2>Add To Do</h2></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <!-- <app-todo-form (toDoChange)="onAddToDoChange($event)"></app-todo-form> -->
+          <mat-form-field>
+            <input matInput [formControl]="task">
+          </mat-form-field>
+          <div fxLayout="row" fxLayoutAlign="end">
+            <button mat-button color="primary" (click)="addToDo()">Add To Do</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+<br>
+<br>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><h2>Completed 🎉</h2></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list role="list">
+            <mat-list-item class="complete"  *ngFor="let task of objectKeys(Completetasks)">
+              <mat-checkbox (change)="onreturnToDo($event,Completetasks[task],task)" [checked]="true">
+                  {{Completetasks[task] }}</mat-checkbox>
+            </mat-list-item>
+          </mat-list>
+          <!-- <app-todo-list ></app-todo-list> -->
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
