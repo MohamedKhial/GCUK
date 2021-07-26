@@ -52,7 +52,7 @@ return TODS;
         //[System.Web.Http.Route("api/TODS/{oldvalue}")]
         public List<string> Put(string oldvalue, string newvalue)
         {
-            var sid = TODS.FirstOrDefault(x => x == oldvalue).Replace(oldvalue,newvalue);         
+                    TODS?.Select(s => s.Replace(oldvalue, newvalue)).ToList();        
             return TODS;
         }
 
