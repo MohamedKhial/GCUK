@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Subject } from 'rxjs';
 import { TodoService } from '../core/services/todo.service';
-
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
@@ -15,7 +17,9 @@ export class TodoComponent implements OnInit {
     Completetasks:Array<string>=[];
 
 iscomplete:boolean=false;
-  constructor(private service:TodoService) { }
+  constructor(private service:TodoService,public dialog: MatDialog
+    , private tostar: ToastrService,
+    ) { }
   task!: FormControl;
 
    ngOnInit(): void {
@@ -23,7 +27,7 @@ iscomplete:boolean=false;
     this.service.getTods().subscribe((data)=>{
     if(data != null){
 
-
+console.log(data);
       this.alltasks.push( data);
       console.log(this.objectKeys(data));
     }
@@ -37,9 +41,14 @@ iscomplete:boolean=false;
   addToDo(){
     this.service.postTODS(this.task.value).subscribe((data)=>{
       console.log(data);
+      this.tostar.success('Submitted Successfully', 'Task Create');
+
     this.alltasks.push(this.task.value);
 
       console.log(this.objectKeys(data));
+    },(err)=>{
+      this.tostar.error('Not Submitted Successfully', 'Task Create');
+
     });
   }
   onCompleteToDo(toDo: MatCheckboxChange,task:string,key:any) {
@@ -48,6 +57,11 @@ iscomplete:boolean=false;
     this.Completetasks.push(task);
     this.service.remove(task).subscribe((data)=>{
       console.log(data);
+      this.tostar.error('Deleted Successfully', 'Task delete');
+
+    },(err)=>{
+      this.tostar.info('Not Submitted Successfully', 'Task Create');
+
     });
  
   }
@@ -55,6 +69,7 @@ iscomplete:boolean=false;
   
     delete this.Completetasks[key];
     this.alltasks.push( task);
+    this.tostar.success('Returned Successfully', 'Task');
 
     console.log(task);
     this.service.postTODS(task).subscribe((data)=>{
@@ -62,7 +77,29 @@ iscomplete:boolean=false;
     // this.alltasks =[];
 
 
+    },(err)=>{
+      this.tostar.info('Could not return Successfully', 'Task');
+
     });
  
   }
+edit(oldvalue:any,newvalue:any){
+  this.service.putTODS(oldvalue,newvalue).subscribe((data)=>{
+
+  })
+}
+openDialog(oldvalue:any): void {
+  console.log(oldvalue)
+  const dialogRef = this.dialog.open(EditDialogComponent,{
+    width: '250px',
+    data: oldvalue
+  }  );
+
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed');
+    
+  });
+}
+
+
 }

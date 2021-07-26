@@ -11,6 +11,7 @@ namespace TODO.Controllers
 {
     //[Route("api/[controller]/[action]")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [System.Web.Http.RoutePrefix("api/TODS")]
     public class TODSController : ApiController
     {
         static List<string> TODS=new List<string>() ;
@@ -21,7 +22,7 @@ namespace TODO.Controllers
        
             if (TODS?.Count > 0)
             {
-                return TODS;
+                return TODS.ToList();
             }
             return null;
         }
@@ -46,9 +47,10 @@ namespace TODO.Controllers
         }
 
         // PUT: api/TODS/5
-        public List<string> Put(string id, [FromBody]string value)
+        //[System.Web.Http.Route("api/TODS/{oldvalue}")]
+        public List<string> Put(string oldvalue, string newvalue)
         {
-            var sid = TODS.FirstOrDefault(x => x == id).Replace(id,value);         
+            var sid = TODS.FirstOrDefault(x => x == oldvalue).Replace(oldvalue,newvalue);         
             return TODS;
         }
 

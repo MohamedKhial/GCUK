@@ -14,10 +14,14 @@ import {MatButtonModule} from '@angular/material/button';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TodoComponent } from './todo/todo.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { EditDialogComponent } from './todo/edit-dialog/edit-dialog.component';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent,
-    TodoComponent
+    TodoComponent,
+    EditDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +38,10 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     //StateModule.forRoot(),
     ReactiveFormsModule
+    ,
+    MatDialogModule,
+    ToastrModule.forRoot()
+
   ],
   providers: [],
   bootstrap: [AppComponent]

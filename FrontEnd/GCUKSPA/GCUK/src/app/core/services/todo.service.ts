@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 @Injectable({
@@ -28,13 +28,20 @@ apipath ="http://localhost:54093/api/"
     };
   return  this.http.post(this.apipath+'TODS',JSON.stringify( body),httpOptions);
   }
-  putTODS(body:any,id:any):Observable<any>{
+  putTODS(oldvalue:any,newvalue:any):Observable<any>{
+    let params = new HttpParams();
+    params = params.append('oldvalue', oldvalue);
+    params = params.append('newvalue', newvalue);
+  
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
+        'Content-Type': 'application/json',
+
+      }),
+      params
     };
-    return  this.http.put(this.apipath+'TODS/'+id, body,httpOptions);
+ // params = HttpParamsConverter.GetHttpParams(params, filterData, null);
+    return  this.http.put(this.apipath+'TODS', httpOptions);
     }
     remove(id:any):Observable<any>{
       const httpOptions = {
@@ -45,4 +52,17 @@ apipath ="http://localhost:54093/api/"
       return  this.http.delete(this.apipath+'TODS/'+id,httpOptions);
       }
 
+
+      // puts(path: string, body:any): Observable<any> {
+      //   const httpOptions = {
+      //     headers: new HttpHeaders({
+      //       'Content-Type': 'application/json'
+      //     }),
+      //   };
+      //   return this.http.put(
+      //     `${this.apipath}${path}`,
+      //     JSON.stringify(body),
+      //     httpOptions
+      //   );
+      // }
 }
