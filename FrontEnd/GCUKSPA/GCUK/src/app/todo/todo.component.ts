@@ -39,11 +39,11 @@ console.log(data);
 
 
   addToDo(){
+  
     this.service.postTODS(this.task.value).subscribe((data)=>{
       console.log(data);
       this.tostar.success('Submitted Successfully', 'Task Create');
 
-    this.alltasks.push(this.task.value);
 
       console.log(this.objectKeys(data));
     },(err)=>{
