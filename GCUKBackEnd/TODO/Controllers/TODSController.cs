@@ -37,7 +37,9 @@ namespace TODO.Controllers
         // POST: api/TODS
         public List<string> Post([FromBody]string value)
         {
-
+if(value ==null){
+return TODS;
+}
             TODS.Add(value);
 
 
