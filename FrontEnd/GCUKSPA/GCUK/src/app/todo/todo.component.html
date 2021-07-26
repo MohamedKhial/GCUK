@@ -15,7 +15,7 @@
               <mat-list role="list">
                 <mat-list-item *ngFor="let task of objectKeys(alltasks)   "  >
                   <mat-checkbox (change)="onCompleteToDo($event,alltasks[task],task)" >
-                      {{task}}
+                      {{alltasks[task}}
             <button mat-raised-button (click)="openDialog(alltasks[task])" color="primary" >Edit</button>
                     
                     </mat-checkbox>
