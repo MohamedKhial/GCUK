@@ -13,7 +13,7 @@
           <ng-container >
             <ng-container *ngIf="alltasks.length > 0; else allDone" >
               <mat-list role="list">
-                <mat-list-item *ngFor="let task of objectKeys(alltasks)   "  >
+                <mat-list-item *ngFor="let task of objectKeys(alltasks);   "  >
                   <mat-checkbox (change)="onCompleteToDo($event,alltasks[task],task)" >
                       {{alltasks[task]}}
             <button mat-raised-button (click)="openDialog(alltasks[task])" color="primary" >Edit</button>

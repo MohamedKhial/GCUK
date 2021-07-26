@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Mvc;
+using TODO.model;
 
 namespace TODO.Controllers
 {
@@ -35,13 +36,13 @@ namespace TODO.Controllers
         }
 
         // POST: api/TODS
-        public List<string> Post([FromBody]string value)
+        public List<string> Post([FromBody]insert value)
         {
-            if(value == null)
+            if(value?.value == null||value == null)
             {
                 return TODS; 
             }
-            TODS.Add(value);
+            TODS.Add(value.value);
 
 
 
@@ -51,10 +52,17 @@ namespace TODO.Controllers
 
         // PUT: api/TODS/5
         //[System.Web.Http.Route("api/TODS/{oldvalue}")]
-        public List<string> Put(string oldvalue, string newvalue)
+        public List<string> Put([FromBody] values values)
         {
-            var sid = TODS.FirstOrDefault(x => x == oldvalue).Replace(oldvalue,newvalue);         
+            if(values != null)
+            {
+                int index = TODS.IndexOf(values.oldvalue);
+                TODS[index] = values.newvalue;
+                //var sid = TODS.FirstOrDefault(x => x == values.oldvalue).Replace(values.oldvalue, values.newvalue);         
+                return TODS;
+            }
             return TODS;
+           
         }
 
         // DELETE: api/TODS/5

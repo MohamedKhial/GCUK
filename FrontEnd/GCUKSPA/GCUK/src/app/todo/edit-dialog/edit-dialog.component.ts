@@ -12,18 +12,16 @@ export class EditDialogComponent  {
   constructor(
     public dialogRef: MatDialogRef<EditDialogComponent>,
     private service:TodoService,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
-      console.log(data)
-      console.log(dialogRef);
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public alltasks: any) {
+    
     this.oldvalue = this.data;
 
     }
 
     edit(newvalue:any){
-      console.log(newvalue)
-      console.log(this.data)
       this.service.putTODS(this.oldvalue,newvalue).subscribe((data)=>{
-
+          
       })
     }
   onNoClick(): void {

@@ -1,23 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { catchError, map, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { BaseService } from './base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class TodoService {
+export class TodoService  extends BaseService {
 apipath ="http://localhost:54093/api/"
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient) {  super();}
   public errorMessage!: string;
-
+  private formatErrors(error: any) {
+    return throwError(error.error);
+  }
   getTods():Observable<any>{
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
       })
     };
-   return this.http.get(this.apipath+'TODS',httpOptions);
+   return this.http.get(this.apipath+'TODS',httpOptions)
+;
   }
+
+
+
   postTODS(body:any):Observable<any>{
    console.log(body);
 
@@ -25,23 +32,25 @@ apipath ="http://localhost:54093/api/"
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
       })
+      
     };
-  return  this.http.post(this.apipath+'TODS',JSON.stringify( body),httpOptions);
+  return  this.http.post(this.apipath+'TODS',   
+  {value:body},httpOptions);
   }
+
+
+
   putTODS(oldvalue:any,newvalue:any):Observable<any>{
-    let params = new HttpParams();
-    params = params.append('oldvalue', oldvalue);
-    params = params.append('newvalue', newvalue);
+  
   
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
 
-      }),
-      params
+      })
     };
  // params = HttpParamsConverter.GetHttpParams(params, filterData, null);
-    return  this.http.put(this.apipath+'TODS', httpOptions);
+    return  this.http.put(this.apipath+'TODS',{oldvalue:oldvalue, newvalue:newvalue}, httpOptions);
     }
     remove(id:any):Observable<any>{
       const httpOptions = {
@@ -51,8 +60,18 @@ apipath ="http://localhost:54093/api/"
       };
       return  this.http.delete(this.apipath+'TODS/'+id,httpOptions);
       }
-
-
+      put(path: string, body:any): Observable<any> {
+        const httpOptions = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          }),
+        };
+        return this.http.put(
+          this.apipath+'TODS/',
+          JSON.stringify(body),
+          httpOptions
+        );
+      }
       // puts(path: string, body:any): Observable<any> {
       //   const httpOptions = {
       //     headers: new HttpHeaders({

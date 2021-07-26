@@ -25,9 +25,10 @@ iscomplete:boolean=false;
    ngOnInit(): void {
     this.task = new FormControl();
     this.service.getTods().subscribe((data)=>{
-    if(data != null){
-
-console.log(data);
+    if(data != null)
+   {
+ 
+console.log(data)
       this.alltasks.push( data);
       console.log(this.objectKeys(data));
     }
@@ -39,42 +40,31 @@ console.log(data);
 
 
   addToDo(){
-  
+
     this.service.postTODS(this.task.value).subscribe((data)=>{
-      console.log(data);
+    this.alltasks.push(this.task.value);
       this.tostar.success('Submitted Successfully', 'Task Create');
-
-
-      console.log(this.objectKeys(data));
     },(err)=>{
       this.tostar.error('Not Submitted Successfully', 'Task Create');
-
     });
   }
   onCompleteToDo(toDo: MatCheckboxChange,task:string,key:any) {
-   
     delete this.alltasks[key];
     this.Completetasks.push(task);
     this.service.remove(task).subscribe((data)=>{
       console.log(data);
       this.tostar.error('Deleted Successfully', 'Task delete');
-
     },(err)=>{
       this.tostar.info('Not Submitted Successfully', 'Task Create');
-
     });
  
   }
   onreturnToDo(toDo: MatCheckboxChange,task:string,key:any) {
-  
     delete this.Completetasks[key];
     this.alltasks.push( task);
     this.tostar.success('Returned Successfully', 'Task');
-
-    console.log(task);
     this.service.postTODS(task).subscribe((data)=>{
-      console.log(data);
-    // this.alltasks =[];
+
 
 
     },(err)=>{
@@ -89,13 +79,15 @@ edit(oldvalue:any,newvalue:any){
   })
 }
 openDialog(oldvalue:any): void {
-  console.log(oldvalue)
   const dialogRef = this.dialog.open(EditDialogComponent,{
     width: '250px',
     data: oldvalue
   }  );
 
   dialogRef.afterClosed().subscribe(result => {
+this.alltasks[this.alltasks.indexOf(oldvalue)] = result;
+    this.tostar.info('The dialog was closed', 'Task');
+
     console.log('The dialog was closed');
     
   });
